@@ -12,6 +12,7 @@ import styles from './Header.module.scss';
 import images from '~/assets/images';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import AccountItem from '~/components/AccountItem';
+import Button from '~/components/Button';
 
 const CX = ClassNames.bind(styles);
 
@@ -70,7 +71,16 @@ function Header() {
                         </button>
                     </div>
                 </Tippy>
-                <div className={CX('actions')}></div>
+                <div className={CX('actions')}>
+                    <Button text>Upload</Button>
+                    <Button
+                        primary
+                        leftIcon={<FontAwesomeIcon icon={faCircleXmark} />}
+                        rightIcon={<FontAwesomeIcon icon={faCircleXmark} />}
+                    >
+                        Log in
+                    </Button>
+                </div>
             </div>
         </header>
     );
