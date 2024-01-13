@@ -1,15 +1,21 @@
 import ClassNames from 'classnames/bind';
-import Tippy from '@tippyjs/react/headless';
+import HeadlessTippy from '@tippyjs/react/headless';
+import Tippy from '@tippyjs/react';
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCircleQuestion,
     faCircleXmark,
+    faCloudUpload,
+    faCoins,
     faEarthAsia,
     faEllipsisVertical,
+    faGear,
     faKeyboard,
     faMagnifyingGlass,
+    faSignOut,
     faSpinner,
+    faUser,
 } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './Header.module.scss';
@@ -18,6 +24,8 @@ import { Wrapper as PopperWrapper } from '~/components/Popper';
 import AccountItem from '~/components/AccountItem';
 import Button from '~/components/Button';
 import Menu from '~/components/Popper/Menu';
+import 'tippy.js/dist/tippy.css';
+import MenuItems from '~/components/Popper/Menu/MenuItem';
 
 const CX = ClassNames.bind(styles);
 
@@ -55,6 +63,8 @@ const MENU_ITEMS = [
 function Header() {
     const [searchResult, setsearchResult] = useState([]);
 
+    const currentUser = true;
+
     useEffect(() => {
         setTimeout(() => {
             setsearchResult([]);
@@ -71,6 +81,31 @@ function Header() {
         }
     };
 
+    const userMenu = [
+        {
+            icon: <FontAwesomeIcon icon={faUser} />,
+            title: 'View profile',
+            to: '/@hoaaa',
+        },
+        {
+            icon: <FontAwesomeIcon icon={faCoins} />,
+            title: 'Get coins',
+            to: '/coins',
+        },
+        {
+            icon: <FontAwesomeIcon icon={faGear} />,
+            title: 'Setting',
+            to: '/setting',
+        },
+        ...MENU_ITEMS,
+        {
+            icon: <FontAwesomeIcon icon={faSignOut} />,
+            title: 'Log out',
+            to: '/logout',
+            separate: true,
+        },
+    ];
+
     return (
         <header className={CX('wrapper')}>
             <div className={CX('inner')}>
@@ -79,7 +114,7 @@ function Header() {
                     <img src={images.logo} alt="TikTok" />
                 </div>
                 {/* Search */}
-                <Tippy
+                <HeadlessTippy
                     visible={searchResult.length > 0}
                     interactive
                     render={(attrs) => (
@@ -117,15 +152,42 @@ function Header() {
                             <FontAwesomeIcon icon={faMagnifyingGlass} />
                         </button>
                     </div>
-                </Tippy>
-                <div className={CX('actions')}>
-                    <Button text>Upload</Button>
-                    <Button primary>Log in</Button>
+                </HeadlessTippy>
 
-                    <Menu items={MENU_ITEMS} onChange={handleMenuChange}>
-                        <button className={CX('more-btn')}>
-                            <FontAwesomeIcon icon={faEllipsisVertical} />
-                        </button>
+                <div className={CX('actions')}>
+                    {currentUser ? (
+                        <>
+                            <Tippy
+                                delay={[0, 200]}
+                                content="Upload Video"
+                                placement="bottom"
+                            >
+                                <button className={CX('action-btn')}>
+                                    <FontAwesomeIcon icon={faCloudUpload} />
+                                </button>
+                            </Tippy>
+                        </>
+                    ) : (
+                        <>
+                            <Button text>Upload</Button>
+                            <Button primary>Log in</Button>
+                        </>
+                    )}
+                    <Menu
+                        items={currentUser ? userMenu : MENU_ITEMS}
+                        onChange={handleMenuChange}
+                    >
+                        {currentUser ? (
+                            <img
+                                src="https://p16-sign-sg.tiktokcdn.com/aweme/100x100/tos-alisg-avt-0068/6c1151ce8f0bd5684e0a4c8ed936fd0a.jpeg?lk3s=a5d48078&x-expires=1705327200&x-signature=eFjVDwZUcHSSuw%2FiwU7mESX1QHU%3D"
+                                className={CX('user-avatar')}
+                                alt="Nguyễn Minh Hiếu"
+                            />
+                        ) : (
+                            <button className={CX('more-btn')}>
+                                <FontAwesomeIcon icon={faEllipsisVertical} />
+                            </button>
+                        )}
                     </Menu>
                 </div>
             </div>
