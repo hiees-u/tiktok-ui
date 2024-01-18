@@ -18,6 +18,28 @@ html {
     font-size: 62.5%;
 }
 
+// nhúng fonts
+@font-face {
+    font-family: IBM Plex Sans;
+    src: url('/assets/font/TikTokFont-Regular.woff2');
+    font-weight: 400;
+}
+@font-face {
+    font-family: IBM Plex Sans;
+    src: url('/assets/font/TikTokFont-Semibold.woff2');
+    font-weight: 600;
+}
+@font-face {
+    font-family: IBM Plex Sans;
+    src: url('/assets/font/TikTokDisplayFont-Bold.woff2');
+    font-weight: 700;
+}
+@font-face {
+    font-family: IBM Plex Sans;
+    src: url('/assets/font/TikTokFont-Bold.woff2');
+    font-weight: 700;
+}
+
 body {
     margin: 0;
     font-family: 'IBM Plex Sans', san-serif;
