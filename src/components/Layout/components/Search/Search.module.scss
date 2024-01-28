@@ -60,11 +60,19 @@
 .clear {
     padding: 0;
     cursor: pointer;
-    // display: none;
 }
 
 .loading {
-    // display: none;
+    animation: spinner 1s linear infinite;
+}
+
+@keyframes spinner {
+    from {
+        transform: translateY(-50%) rotate(0);
+    }
+    to {
+        transform: translateY(-50%) rotate(360deg);
+    }
 }
 
 .clear,

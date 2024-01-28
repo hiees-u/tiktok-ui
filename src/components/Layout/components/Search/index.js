@@ -15,14 +15,32 @@ function Search() {
     const [showResult, setShowResult] = useState(true);
     const [searchResult, setSearchResult] = useState([]);
     const [searchValue, setSearchValue] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const inputRef = useRef();
 
     useEffect(() => {
-        setTimeout(() => {
+        if (!searchValue) {
             setSearchResult([]);
-        }, 0);
-    }, []);
+            return;
+        }
+
+        setLoading(true);
+
+        fetch(
+            'https://tiktok.fullstack.edu.vn/api/users/search?q=' +
+                encodeURIComponent(searchValue) +
+                '&type=less',
+        )
+            .then((res) => res.json())
+            .then((res) => {
+                setSearchResult(res.data);
+                setLoading(false);
+            })
+            .catch(() => {
+                setLoading(false);
+            });
+    }, [searchValue]);
 
     const handleClear = () => {
         setSearchValue('');
@@ -34,6 +52,10 @@ function Search() {
         setShowResult(false);
     };
 
+    const hanleChangeInput = (e) => {
+        setSearchValue(e.target.value);
+    };
+
     return (
         <HeadlessTippy
             visible={showResult && searchResult.length > 0}
@@ -42,10 +64,9 @@ function Search() {
                 <div className={CX('search-result')} tabIndex={-1} {...attrs}>
                     <PopperWrapper>
                         <h4 className={CX('search-title')}>Accounts</h4>
-                        <AccountItem />
-                        <AccountItem />
-                        <AccountItem />
-                        <AccountItem />
+                        {searchResult.map((result) => (
+                            <AccountItem key={result.id} data={result} />
+                        ))}
                     </PopperWrapper>
                 </div>
             )}
@@ -57,19 +78,24 @@ function Search() {
                     value={searchValue}
                     placeholder="Search accounts and videos"
                     spellCheck={false}
-                    onChange={(e) => setSearchValue(e.target.value)}
+                    onChange={(e) => hanleChangeInput(e)}
                     onFocus={() => setShowResult(true)}
                 />
 
                 {/* clear button */}
-                {!!searchValue && (
+                {!!searchValue && !loading && (
                     <button className={CX('clear')} onClick={handleClear}>
                         <FontAwesomeIcon icon={faCircleXmark} />
                     </button>
                 )}
 
                 {/* loading button*/}
-                {/* <FontAwesomeIcon className={CX('loading')} icon={faSpinner} /> */}
+                {loading && (
+                    <FontAwesomeIcon
+                        className={CX('loading')}
+                        icon={faSpinner}
+                    />
+                )}
 
                 {/* Search button */}
                 <button className={CX('search-btn')}>
