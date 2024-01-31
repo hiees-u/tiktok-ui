@@ -12,7 +12,9 @@ import {
     faSignOut,
     faUser,
 } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
+import routesConfig from '~/config/routes';
 import styles from './Header.module.scss';
 import images from '~/assets/images';
 import Image from '~/components/Image';
@@ -96,9 +98,9 @@ function Header() {
         <header className={CX('wrapper')}>
             <div className={CX('inner')}>
                 {/* Logo */}
-                <div className={CX('logo')}>
+                <Link to={routesConfig.home} className={CX('logo')}>
                     <img src={images.logo} alt="TikTok" />
-                </div>
+                </Link>
 
                 {/* Search */}
                 <Search />
@@ -143,13 +145,14 @@ function Header() {
                         </>
                     )}
                     <Menu
+                        hideOnClick={false}
                         items={currentUser ? userMenu : MENU_ITEMS}
                         onChange={handleMenuChange}
                     >
                         {currentUser ? (
                             <Image
-                                src="https://p16-sign-sg.tiktokcdn.com/aweme/100x100/tos-alisg-avt-0068/6c1151ce8f0bd5684e0a4c8ed936fd0a.jpeg?lk3s=a5d48078&x-expires=1705327200&x-signature=eFjVDwZUcHSSuw%2FiwU7mESX1QHU%3D"
                                 className={CX('user-avatar')}
+                                src="https://p16-sign-sg.tiktokcdn.com/aweme/100x100/tos-alisg-avt-0068/6c1151ce8f0bd5684e0a4c8ed936fd0a.jpeg?lk3s=a5d48078&x-expires=1705327200&x-signature=eFjVDwZUcHSSuw%2FiwU7mESX1QHU%3D"
                                 alt="Nguyễn Minh Hiếu"
                             />
                         ) : (
