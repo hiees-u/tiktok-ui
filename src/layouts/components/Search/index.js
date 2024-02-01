@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { SearchIcon } from '~/components/Icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import * as searchServices from '~/apiServices/searchServices';
+import * as searchServices from '~/services/searchServices';
 
 import { useDebounce } from '~/hooks';
 import Style from './Search.module.scss';
@@ -52,7 +52,8 @@ function Search() {
 
     const hanleChangeInput = (e) => {
         const searchValue = e.target.value;
-        if (!searchValue.startsWith(' ')) setSearchValue(searchValue);
+        if (searchValue.startsWith(' ')) return;
+        setSearchValue(searchValue);
     };
 
     return (
@@ -100,7 +101,7 @@ function Search() {
                     )}
 
                     {/* loading button*/}
-                    {loading && (
+                    {loading && !!searchValue && (
                         <FontAwesomeIcon
                             className={CX('loading')}
                             icon={faSpinner}
